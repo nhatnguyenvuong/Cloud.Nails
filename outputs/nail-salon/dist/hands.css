@@ -1,0 +1,75 @@
+/* Creation-inspired scene: static plate, independent hand cutouts, CSS-only sequencing. */
+.hands-scene{--creation-ink:#d8c5aa;--creation-line:#b9a07845;--creation-dark:#080807;--creation-gold:#eac993;--creation-clear:#eac99300;--creation-soft:#eac99320;--creation-core:#fff0d0;--touch-x:50%;--touch-y:49%}
+main>.visit.hands-scene{position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:space-between;gap:clamp(140px,23svh,250px);min-height:100vh;min-height:100svh;height:auto;padding:clamp(85px,14svh,150px) var(--gutter) clamp(32px,5svh,60px);background:var(--creation-dark);overflow:clip;color:var(--creation-ink)}
+.creation-background,.hand-motion{position:absolute;inset:0;pointer-events:none;user-select:none}
+.creation-background{z-index:-4}.creation-background img{width:100%;height:100%;object-fit:cover}
+.hand-motion{--rest-x:0px;--rest-y:0px;--start-x:0px;--start-y:0px;z-index:-1;transform:translate(var(--rest-x),var(--rest-y))}
+.hand-right{--rest-x:5.68%;--rest-y:1.44%}
+.hand-motion img{width:100%;height:100%;object-fit:cover;transform-origin:var(--finger-x,50%) var(--finger-y,49%)}
+.creation-ring{position:absolute;left:var(--touch-x);top:var(--touch-y);width:min(82svh,84vw);height:min(82svh,84vw);aspect-ratio:1;transform:translate(-50%,-50%);border:1px solid var(--creation-line);border-radius:50%;z-index:-3;pointer-events:none}
+.creation-axis{position:absolute;left:var(--touch-x);top:0;bottom:7%;width:1px;background:linear-gradient(var(--creation-line),transparent 18%,transparent 40%,var(--creation-line) 49%,transparent 62%,transparent 75%,var(--creation-line));z-index:-3;pointer-events:none}
+.hands-heading{align-self:center;text-align:center;max-width:650px;position:relative;z-index:1}
+.hands-number{font-family:var(--body);font-size:14px;letter-spacing:6px;line-height:1.5;margin-bottom:23px}
+.visit.hands-scene .hands-heading h2{font-family:var(--display);font-weight:300;font-size:clamp(43px,4.4vw,74px);line-height:1.05;letter-spacing:-.035em;margin:0}
+.visit.hands-scene .hands-heading h2 span{padding:0;white-space:normal}
+.hands-category{font-size:9px;letter-spacing:3.5px;line-height:1.5;margin-top:24px}
+.hands-footer{align-self:center;text-align:center;max-width:550px;position:relative;z-index:2}
+.hands-editorial-copy{font-family:var(--body);font-size:19px;line-height:1.35;color:var(--creation-ink)}
+.hands-craft-copy{font-size:9px;line-height:1.8;letter-spacing:1.5px;text-transform:uppercase;margin-top:19px;color:var(--muted)}
+.hands-credit{font-size:8px;line-height:1.7;color:var(--muted);margin-top:14px;letter-spacing:.1px}
+.contact-light{position:absolute;left:var(--touch-x);top:var(--touch-y);z-index:0;pointer-events:none;width:0;height:0;mix-blend-mode:screen}
+.contact-core,.contact-flash,.contact-aura{display:block;position:absolute;left:0;top:0;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}
+.contact-core{width:5px;height:5px;background:var(--creation-core);box-shadow:0 0 10px 2px var(--creation-gold);opacity:.25}
+.contact-flash{width:clamp(80px,16vw,260px);aspect-ratio:1;background:radial-gradient(circle,var(--creation-soft),var(--creation-clear) 68%);opacity:0}
+.contact-aura{width:clamp(180px,40vw,600px);aspect-ratio:1;background:radial-gradient(circle,var(--creation-soft),var(--creation-clear) 68%);opacity:0}
+.hands-scene.is-armed:not(.is-playing):not(.is-complete) .hand-motion{transform:translate(var(--start-x),var(--start-y))}
+.hands-scene.is-armed:not(.is-complete) .hands-reveal{opacity:0;transform:translateY(10px)}
+.hands-scene.is-armed:not(.is-playing):not(.is-complete) .contact-core{opacity:0}
+.hands-scene.is-playing .hand-motion{animation:hands-approach 1.2s cubic-bezier(.25,.1,.2,1) both;will-change:transform}
+.hands-scene.is-playing .contact-core{animation:hands-contact .8s 1.08s ease-out both}
+.hands-scene.is-playing .contact-flash{animation:hands-flash .6s 1.11s ease-out both}
+.hands-scene.is-playing .contact-aura{animation:hands-aura .8s 1.13s ease-out both}
+.hands-scene.is-playing .hands-heading{animation:hands-content-reveal .45s 1.16s var(--ease) both}
+.hands-scene.is-playing .hands-footer{animation:hands-content-reveal .48s 1.28s var(--ease) both}
+.hands-scene.is-complete .hand-motion{will-change:auto}
+.hands-scene.is-complete:not(.is-reduced) .hand-left img{animation:hands-breathe-left 13s ease-in-out infinite}
+.hands-scene.is-complete:not(.is-reduced) .hand-right img{animation:hands-breathe-right 15s ease-in-out infinite}
+.hands-scene.is-paused .hand-motion,.hands-scene.is-paused .hand-motion img,.hands-scene.is-paused .hands-reveal,.hands-scene.is-paused .contact-light>span{animation-play-state:paused!important}
+.hands-scene.is-reduced .hand-motion,.hands-scene.is-reduced .hand-motion img,.hands-scene.is-reduced .hands-reveal,.hands-scene.is-reduced .contact-light>span{animation:none!important}
+.hands-scene.is-reduced .hands-reveal,.hands-scene.is-complete:not(.is-playing) .hands-reveal{opacity:1;transform:none}
+@keyframes hands-approach{0%{transform:translate(var(--start-x),var(--start-y))}90%,100%{transform:translate(var(--rest-x),var(--rest-y))}}
+@keyframes hands-contact{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}15%{opacity:.85;transform:translate(-50%,-50%) scale(1.1)}100%{opacity:.25;transform:translate(-50%,-50%) scale(1)}}
+@keyframes hands-flash{0%{opacity:0;transform:translate(-50%,-50%) scale(.12)}20%{opacity:.7}100%{opacity:0;transform:translate(-50%,-50%) scale(1.4)}}
+@keyframes hands-aura{0%{opacity:0;transform:translate(-50%,-50%) scale(.7)}25%{opacity:.7}100%{opacity:0;transform:translate(-50%,-50%) scale(1.1)}}
+@keyframes hands-content-reveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes hands-breathe-left{0%,100%{transform:rotate(0deg)}50%{transform:rotate(.07deg)}}
+@keyframes hands-breathe-right{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-.065deg)}}
+@media(max-width:760px){main>.visit.hands-scene{padding:clamp(62px,9svh,90px) var(--gutter) max(95px,calc(80px + env(safe-area-inset-bottom)));gap:clamp(140px,24svh,220px)}.visit.hands-scene .hands-heading h2{font-size:clamp(38px,10.5vw,58px)}.hands-number{margin-bottom:17px;font-size:12px}.hands-category{margin-top:17px;font-size:8px;letter-spacing:2.4px}.creation-ring{width:88vw;height:88vw}.hands-editorial-copy{font-size:17px}.hands-craft-copy{font-size:8px;margin-top:14px}.hands-credit{font-size:7px}}
+@media(prefers-reduced-motion:reduce){.hands-scene .hand-motion,.hands-scene .hand-motion img,.hands-scene .hands-reveal,.hands-scene .contact-light>span{animation:none!important;transition:none!important}.hands-scene .hand-motion{transform:translate(var(--rest-x),var(--rest-y))!important}.hands-scene .hands-reveal{opacity:1!important;transform:none!important}.hands-scene .contact-flash,.hands-scene .contact-aura{opacity:0!important}}
+@media print{main>.visit.hands-scene{min-height:0;gap:40px;padding:40px}.hand-motion,.creation-background,.contact-light,.creation-ring,.creation-axis{display:none}.hands-scene .hands-reveal{opacity:1!important;transform:none!important}}
+
+.hands-scene.is-asset-error .hand-motion,.hands-scene.is-asset-error .contact-light{display:none}
+
+/* Booking CTA follows the two testimonial rows. */
+.visit.hands-scene .hands-heading{max-width:850px}
+.visit.hands-scene .hands-heading h2{font-size:clamp(42px,4.4vw,74px);line-height:1.08}
+.visit.hands-scene .hands-heading h2 span{display:block;padding:0;margin:0}
+.visit.hands-scene .hands-number{font-family:var(--body);font-size:9px;letter-spacing:2px}
+.visit.hands-scene .hands-footer{width:100%;max-width:1000px}
+.visit.hands-scene .hands-book{display:inline-flex;background:transparent;border-color:var(--creation-ink);color:var(--ink);min-width:230px;justify-content:space-between}
+.visit.hands-scene .hands-book:hover{background:var(--creation-ink);color:var(--creation-dark)}
+.visit.hands-scene .contact-grid{margin-top:30px;padding-top:24px;border-top:1px solid var(--creation-line);text-align:left;gap:25px}
+.visit.hands-scene .contact-grid h3{margin-bottom:9px;color:var(--creation-ink)}
+.visit.hands-scene .contact-grid p,.visit.hands-scene .contact-grid a{font-size:11px;color:var(--ink)}
+.visit.hands-scene .hands-credit{color:var(--muted);margin-top:20px;font-size:8px}
+@media(max-width:760px){
+ .visit.hands-scene .hands-heading h2{font-size:clamp(36px,9vw,58px)}
+ .visit.hands-scene .contact-grid{grid-template-columns:1fr 1fr;margin-top:24px;padding-top:20px;gap:18px}
+ .visit.hands-scene .contact-grid h3{font-size:10px}
+ .visit.hands-scene .contact-grid p,.visit.hands-scene .contact-grid a{font-size:10px}
+ .visit.hands-scene .hands-credit{font-size:7px}
+}
+
+/* Original user-supplied PNGs: fit the whole cutout, scale uniformly at its fingertip.
+   Individual scale stays independent of the existing breathing rotation. */
+.hand-motion img[data-render-scale]{object-fit:contain;scale:var(--asset-scale,1)}

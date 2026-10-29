@@ -1,0 +1,43 @@
+/* Animation-only Hero enhancement: no layout, font, image crop or content changes. */
+.hero-showcase.is-hero-enhanced .hero-backdrops{translate:var(--hero-cursor-x,0px) var(--hero-cursor-y,0px);transform-origin:72% 48%}
+.hero-showcase .hero-backdrops.is-hero-following{will-change:translate}
+.hero-showcase .hero-atmosphere{position:absolute;inset:0;z-index:-1;pointer-events:none;user-select:none;overflow:hidden}
+.hero-showcase .hero-atmosphere::before{content:"";position:absolute;inset:-1%;background:radial-gradient(ellipse 47% 65% at 74% 48%,rgba(193,132,65,.085),rgba(139,87,40,.025) 48%,transparent 76%);opacity:.3;pointer-events:none}
+.hero-showcase .hero-dust{display:block;width:100%;height:100%;pointer-events:none;opacity:.65}
+.hero-showcase .hero-dust[hidden]{display:none}
+.hero-showcase.is-hero-entered .hero-atmosphere::before{animation:hero-ambient-light 24s ease-in-out infinite;animation-play-state:paused}
+.hero-showcase.is-hero-entered.is-hero-atmosphere-active .hero-atmosphere::before{animation-play-state:running}
+/* A prepaint class is removed by a short fail-safe if the enhancement cannot load. */
+.hero-entry-pending .masthead,.hero-entry-pending .hero-showcase :is(.hero-kicker,.hero-line,.hero-actions,.hero-socials){opacity:0}
+.hero-entry-pending .hero-showcase .hero-backdrops{opacity:0}
+.hero-entry-pending .hero-showcase .hero-atmosphere::before,.hero-entry-pending .hero-showcase .hero-dust{opacity:0}
+.hero-entry-pending .hero-showcase::after{content:"";position:absolute;inset:0;z-index:3;background:#000;pointer-events:none;opacity:1}
+.hero-entry-running .hero-showcase::after{animation:hero-curtain-lift 700ms ease-out 40ms both}
+.hero-entry-running .hero-showcase .hero-backdrops{animation:hero-image-awaken 2050ms cubic-bezier(.2,.65,.2,1) both;will-change:opacity,scale}
+.hero-entry-running .hero-showcase .hero-atmosphere::before{animation:hero-bloom-awaken 1900ms ease both}
+.hero-entry-running .hero-showcase .hero-dust{animation:hero-dust-awaken 900ms ease 180ms both}
+.hero-entry-running .masthead{animation:hero-ui-awaken 450ms ease 240ms both}
+.hero-entry-running .hero-showcase .hero-kicker{animation:hero-copy-awaken 450ms cubic-bezier(.22,1,.36,1) 240ms both}
+.hero-entry-running .hero-showcase .hero-line{animation:hero-line-awaken 780ms cubic-bezier(.22,1,.36,1) var(--hero-line-delay,430ms) both}
+.hero-entry-running .hero-showcase .hero-line:nth-child(2){--hero-line-delay:560ms}
+.hero-entry-running .hero-showcase .hero-line:nth-child(3){--hero-line-delay:690ms}
+.hero-entry-running .hero-showcase .hero-actions{animation:hero-copy-awaken 520ms cubic-bezier(.22,1,.36,1) 1130ms both}
+.hero-entry-running .hero-showcase .hero-socials{animation:hero-copy-awaken 420ms ease 1360ms both}
+@keyframes hero-curtain-lift{from{opacity:1}to{opacity:0}}
+@keyframes hero-image-awaken{0%{opacity:0;scale:.992}40%{opacity:1}100%{opacity:1;scale:1}}
+@keyframes hero-bloom-awaken{0%{opacity:0;transform:scale(.99)}45%{opacity:.7}100%{opacity:.3;transform:none}}
+@keyframes hero-dust-awaken{from{opacity:0}to{opacity:.65}}
+@keyframes hero-ui-awaken{from{opacity:0}to{opacity:1}}
+@keyframes hero-copy-awaken{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+@keyframes hero-line-awaken{from{opacity:1;clip-path:inset(0 0 100% 0);transform:translateY(14px)}to{opacity:1;clip-path:inset(-35% -8% -35% -8%);transform:none}}
+@keyframes hero-ambient-light{0%,100%{opacity:.27;transform:translate(-.2%,0)}50%{opacity:.36;transform:translate(.3%,-.2%)}}
+@media(prefers-reduced-motion:reduce){
+ .hero-showcase .hero-atmosphere{display:none}
+ .hero-showcase.is-hero-enhanced .hero-backdrops{translate:none;scale:none;animation:none!important;opacity:1!important;will-change:auto}
+ .hero-entry-pending .masthead,.hero-entry-pending .hero-showcase :is(.hero-kicker,.hero-line,.hero-actions,.hero-socials){opacity:1!important;animation:none!important;transform:none!important;clip-path:none!important}
+ .hero-entry-pending .hero-showcase::after{display:none;animation:none}
+}
+@media print{
+ .hero-showcase .hero-atmosphere,.hero-entry-pending .hero-showcase::after{display:none}
+ .hero-entry-pending .masthead,.hero-entry-pending .hero-showcase :is(.hero-kicker,.hero-line,.hero-actions,.hero-socials,.hero-backdrops){opacity:1!important;animation:none!important;transform:none!important;clip-path:none!important}
+}

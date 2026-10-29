@@ -1,0 +1,33 @@
+/* Vietnamese typesetting: preserve the composition and give tone marks room. */
+html:lang(vi) .hero.hero-showcase h1{font-size:clamp(86px,8.6vw,148px);line-height:.96}
+html:lang(vi) .hero.hero-showcase h1 .hero-line+.hero-line{margin-top:3px}
+html:lang(vi) .hero-image-note{max-width:80vw;text-align:right;line-height:1.6}
+html:lang(vi) .treatment-heading{align-items:start;gap:30px}
+html:lang(vi) .treatment-heading h2{white-space:normal;min-width:0;font-size:clamp(40px,3.8vw,60px);line-height:1.08;flex:1}
+html:lang(vi) .treatment-heading>p{flex:0 0 31%;padding-top:4px}
+html:lang(vi) .gallery h2{line-height:1.06}
+html:lang(vi) .gallery h2 span{white-space:normal}
+html:lang(vi) .review-intro h2{line-height:1.08}
+html:lang(vi) .visit h2{font-size:clamp(64px,8.6vw,146px);line-height:1.05}
+html:lang(vi) .visit h2 span{padding-left:10%;margin-top:0}
+html:lang(vi) dialog h2{line-height:1.08}
+html:lang(vi) .site-footer .wordmark span{letter-spacing:3px}
+@media(min-width:1900px){html:lang(vi) .hero.hero-showcase h1{font-size:min(8.5vw,192px)}}
+@media(max-height:820px) and (min-width:901px){html:lang(vi) .hero.hero-showcase h1{font-size:clamp(80px,7.3vw,119px)}}
+@media(max-width:1100px){html:lang(vi) .hero.hero-showcase h1{font-size:9.8vw}}
+@media(max-width:760px){
+html:lang(vi) .hero.hero-showcase h1{font-size:13.7vw;line-height:1}
+html:lang(vi) .hero.hero-showcase h1 .hero-line-last{font-size:15.8vw}
+html:lang(vi) .hero-kicker{letter-spacing:1.5px;max-width:90%}
+html:lang(vi) .hero.hero-showcase h1 .hero-line+.hero-line{margin-top:2px}
+html:lang(vi) .hero-manifesto{margin-top:22px}
+html:lang(vi) .hero-image-note{font-size:6px;max-width:88vw}
+html:lang(vi) .treatment-heading h2{font-size:43px;line-height:1.1}
+html:lang(vi) .treatment-heading>p{padding:0;max-width:330px}
+html:lang(vi) .service-list h3{line-height:1.28}
+html:lang(vi) .service-list strong{font-size:11px}
+html:lang(vi) .visit h2{font-size:12.1vw;line-height:1.12;letter-spacing:-.045em}
+html:lang(vi) .visit h2 span{padding-left:5%}
+html:lang(vi) .contact-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:380px){html:lang(vi) .contact-grid{grid-template-columns:1fr}}

@@ -1,0 +1,120 @@
+/* Manual editorial carousel. Scene navigation and other components stay untouched. */
+main>.testimonials.testimonials-carousel{--review-accent:#d8c5aa;--review-edge:#d8c5aa70;--review-duration:760ms;--review-ease:cubic-bezier(.22,.68,.2,1);--review-space:clamp(170px,21vw,340px);--review-width:clamp(240px,25vw,390px);--review-height:clamp(330px,48svh,560px);display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:0;min-width:0;min-height:100vh;min-height:100svh;height:auto;padding:clamp(28px,4svh,48px) 0 26px;background:#080807;isolation:isolate;overflow:clip}
+.testimonials-carousel .testimonials-heading{text-align:center;padding:0 var(--gutter) 20px;position:relative;z-index:1;opacity:1;transform:none;transition:opacity 620ms var(--review-ease),transform 620ms var(--review-ease)}
+.testimonials-carousel .testimonials-heading .eyebrow{font-size:9px;letter-spacing:3px;line-height:1.6}
+.testimonials-carousel .review-heading-rule{display:block;height:1px;width:50px;background:var(--review-accent);margin:17px auto 21px}
+.testimonials-carousel .testimonials-heading h2{font-family:var(--display);font-weight:300;font-size:clamp(64px,6.6vw,112px);line-height:1.06;letter-spacing:-.035em;margin:0}
+.testimonials-carousel .testimonials-heading h2 span{font-style:italic;color:var(--review-accent)}
+.testimonials-carousel .review-description{font-family:var(--body);font-size:18px;font-weight:300;line-height:1.45;max-width:680px;margin:13px auto 0;color:var(--ink)}
+.testimonials-carousel .review-window{position:relative;width:100%;min-width:0;height:clamp(350px,52svh,620px);overflow:clip;touch-action:pan-y pinch-zoom}
+.testimonials-carousel .review-stage{position:absolute;inset:0;perspective:1400px;perspective-origin:50% 45%;transform-style:preserve-3d}
+.testimonials-carousel .review-card{position:absolute;left:50%;top:50%;width:var(--review-width);height:var(--review-height);display:block;margin:0;padding:0;border:1px solid var(--review-edge);border-radius:2px;overflow:hidden;background:#100e0b;color:var(--ink);font:inherit;text-align:left;cursor:pointer;user-select:none;-webkit-user-select:none;backface-visibility:hidden;box-shadow:0 18px 40px -22px #000b;opacity:var(--review-opacity,1);z-index:var(--review-layer,1);transform:translate(-50%,-50%) translateX(calc(var(--review-slot,0)*var(--review-space))) translateY(var(--review-lift,0px)) translateZ(var(--review-depth,0px)) rotateY(var(--review-yaw,0deg)) scale(var(--review-scale,1));transition:transform var(--review-duration) var(--review-ease),opacity 600ms var(--review-ease),border-color .3s}
+.testimonials-carousel .review-card img{width:100%;height:100%;object-fit:cover;pointer-events:none;filter:brightness(var(--review-brightness,1)) saturate(.86) sepia(.08);transition:filter var(--review-duration) var(--review-ease)}
+.testimonials-carousel .review-card-shade{position:absolute;inset:0;background:linear-gradient(180deg,#08080710 10%,#08080700 26%,#08080745 48%,#080807d9 78%,#080807f5 100%);pointer-events:none}
+.testimonials-carousel .review-card-content{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;padding:22px clamp(18px,2vw,28px);pointer-events:none}
+.testimonials-carousel .review-card q{display:block;font-family:var(--body);font-weight:400;font-size:clamp(18px,1.55vw,24px);line-height:1.23;quotes:none;overflow-wrap:break-word}
+.testimonials-carousel .review-card q:before{content:'“'}.testimonials-carousel .review-card q:after{content:'”'}
+.testimonials-carousel .review-customer{display:block;font-family:var(--display);font-size:20px;line-height:1.2;color:var(--review-accent);margin-top:16px}
+.testimonials-carousel .review-service{display:block;font-size:8px;letter-spacing:2px;line-height:1.5;text-transform:uppercase;margin-top:5px;color:var(--ink)}
+.testimonials-carousel .review-card.is-active{border-color:var(--review-accent)}
+.testimonials-carousel .review-card:hover{border-color:var(--review-accent)}
+.testimonials-carousel .review-card:focus-visible{outline:2px solid var(--ink);outline-offset:-4px}
+.testimonials-carousel .review-card.is-repositioning{transition:none!important}
+.testimonials-carousel .review-nav{display:flex;justify-content:center;align-items:center;gap:26px;padding:18px var(--gutter) 0;opacity:1;transform:none;transition:opacity 400ms ease,transform 400ms var(--review-ease)}
+.testimonials-carousel .review-step{display:flex;align-items:center;justify-content:center;flex:0 0 50px;width:50px;height:50px;min-height:44px;border:1px solid var(--review-edge);border-radius:50%;background:transparent;color:var(--review-accent);padding:0;cursor:pointer;touch-action:manipulation;transition:color .2s,border-color .2s}
+.testimonials-carousel .review-step svg{pointer-events:none}
+.testimonials-carousel .review-step:hover{border-color:var(--ink);color:var(--ink)}
+.testimonials-carousel .review-step:focus-visible{outline:2px solid var(--ink);outline-offset:5px}
+.testimonials-carousel .review-position{width:140px;text-align:center}
+.testimonials-carousel #review-position{font-family:var(--body);font-size:12px;letter-spacing:1px;line-height:1.5;font-variant-numeric:tabular-nums}
+.testimonials-carousel .review-progress{height:1px;width:100%;margin-top:10px;background:#d8c5aa45;overflow:hidden}
+.testimonials-carousel .review-progress span{display:block;width:100%;height:100%;background:var(--ink);transform-origin:left;transition:transform var(--review-duration) var(--review-ease)}
+.testimonials-carousel .reviews-sample-note{padding:0 var(--gutter);margin-top:13px;text-align:center;color:var(--muted);font-size:8px;line-height:1.6}
+/* One reserved-layout entrance: darkness, atmosphere, cards, then typography. */
+.testimonials-carousel.is-intro-ready:not(.is-entered):not(.is-intro-playing) :is(.testimonials-heading,.review-card,.review-nav,.reviews-sample-note){opacity:0;visibility:hidden}
+.testimonials-carousel.is-intro-playing .review-card{animation:review-card-reveal var(--intro-duration,460ms) var(--review-ease) var(--intro-delay,560ms) both}
+.testimonials-carousel.is-intro-playing .testimonials-heading{animation:review-type-reveal 360ms var(--review-ease) 830ms both}
+.testimonials-carousel.is-intro-playing :is(.review-nav,.reviews-sample-note){animation:review-type-reveal 250ms ease 1050ms both}
+.testimonials-carousel.is-intro-skip :is(.testimonials-heading,.review-card,.review-nav,.reviews-sample-note){transition:none!important;animation:none!important}
+@keyframes review-card-reveal{
+ from{opacity:0;visibility:hidden;transform:translate(-50%,-50%) translateX(calc(var(--review-slot,0)*var(--review-space))) translateY(calc(var(--review-lift,0px) + 24px)) translateZ(calc(var(--review-depth,0px) - 36px)) rotateY(var(--review-yaw,0deg)) scale(calc(var(--review-scale,1)*.96))}
+ 1%{visibility:visible}
+ to{opacity:var(--review-opacity,1);visibility:visible;transform:translate(-50%,-50%) translateX(calc(var(--review-slot,0)*var(--review-space))) translateY(var(--review-lift,0px)) translateZ(var(--review-depth,0px)) rotateY(var(--review-yaw,0deg)) scale(var(--review-scale,1))}
+}
+@keyframes review-type-reveal{from{opacity:0;visibility:hidden;transform:translateY(9px)}1%{visibility:visible}to{opacity:1;visibility:visible;transform:none}}
+@media(min-width:761px) and (max-height:820px){main>.testimonials.testimonials-carousel{padding-top:24px;padding-bottom:20px}.testimonials-carousel .review-heading-rule{margin:12px auto 16px}.testimonials-carousel .testimonials-heading{padding-bottom:15px}.testimonials-carousel .testimonials-heading h2{font-size:clamp(62px,6vw,92px)}.testimonials-carousel .review-description{font-size:17px}.testimonials-carousel .review-nav{padding-top:14px}}
+@media(max-width:760px){
+ main>.testimonials.testimonials-carousel{--review-space:clamp(220px,76vw,380px);--review-width:clamp(235px,72vw,340px);--review-height:clamp(330px,42svh,480px);padding:24px 0 max(96px,calc(82px + env(safe-area-inset-bottom)))}
+ .testimonials-carousel .testimonials-heading{padding-bottom:16px}
+ .testimonials-carousel .testimonials-heading .eyebrow{font-size:8px;letter-spacing:2px}
+ .testimonials-carousel .review-heading-rule{margin:11px auto 16px;width:42px}
+ .testimonials-carousel .testimonials-heading h2{font-size:clamp(43px,8.5vw,64px);line-height:1.06}
+ .testimonials-carousel .review-description{font-size:15px;line-height:1.4;margin-top:12px;max-width:420px}
+ .testimonials-carousel .review-window{height:clamp(350px,45svh,500px)}
+ .testimonials-carousel .review-card{transform:translate(-50%,-50%) translateX(calc(var(--review-slot,0)*var(--review-space))) scale(var(--review-scale,1))}
+ .testimonials-carousel .review-card-content{padding:20px}
+ .testimonials-carousel .review-card q{font-size:19px;line-height:1.22}
+ .testimonials-carousel .review-customer{font-size:19px;margin-top:13px}
+ .testimonials-carousel .review-service{font-size:7px;letter-spacing:1.6px}
+ .testimonials-carousel .review-card[data-far="true"],.testimonials-carousel .review-edge-copy{opacity:0;pointer-events:none}
+ .testimonials-carousel .review-nav{gap:20px;padding-top:13px}
+ .testimonials-carousel .review-step{width:44px;height:44px;flex-basis:44px}
+ .testimonials-carousel .review-position{width:120px}
+ .testimonials-carousel .reviews-sample-note{font-size:7px;margin-top:12px}
+}
+@media(max-width:520px){.testimonials-carousel .testimonials-heading h2 span{display:block}.testimonials-carousel .review-desktop-break{display:none}}
+@media(prefers-reduced-motion:reduce){.testimonials-carousel .testimonials-heading,.testimonials-carousel .review-card,.testimonials-carousel .review-card img,.testimonials-carousel .review-nav,.testimonials-carousel .review-progress span{transition:none!important}.testimonials-carousel.is-intro-ready .testimonials-heading,.testimonials-carousel.is-intro-ready .review-nav{opacity:1;transform:none}}
+@media print{main>.testimonials.testimonials-carousel{min-height:0;padding:30px 0}.testimonials-carousel .testimonials-heading{opacity:1!important;transform:none!important}.testimonials-carousel .review-window{height:auto;overflow:visible}.testimonials-carousel .review-stage{position:static;display:flex;flex-wrap:wrap;gap:15px;perspective:none}.testimonials-carousel .review-card{position:relative;left:auto;top:auto;transform:none!important;opacity:1!important;width:30%;height:400px;break-inside:avoid}.testimonials-carousel .review-edge-copy,.testimonials-carousel .review-nav{display:none}}
+
+/* The entire studio environment sits below the unchanged perspective stage. */
+@media screen{
+ main>.testimonials.testimonials-carousel{--review-ambient-y:58%;--review-floor-y:84%;--review-beam-left:104deg;--review-beam-right:202deg;background:#080706}
+ main>.testimonials.testimonials-carousel::before,main>.testimonials.testimonials-carousel::after{content:"";position:absolute;inset:0;pointer-events:none;user-select:none}
+ main>.testimonials.testimonials-carousel::before{
+  z-index:-3;
+  background:
+   linear-gradient(180deg,rgba(8,7,6,.14),rgba(8,7,6,.04) 55%,rgba(8,7,6,.18)),
+   url("assets/testimonial-gold-dust.png") center center/cover no-repeat;
+ }
+ main>.testimonials.testimonials-carousel::after{z-index:-1;background:radial-gradient(ellipse 36% 8% at 50% var(--review-floor-y),#0007,rgba(0,0,0,.16) 46%,transparent),radial-gradient(ellipse 94% 85% at 50% 47%,transparent 40%,#0003 76%,#0009)}
+ .testimonials-carousel .review-dust{position:absolute;inset:0;z-index:-2;display:block;width:100%;height:100%;pointer-events:none;user-select:none;opacity:1}
+ main>.testimonials.testimonials-carousel.is-intro-ready:not(.is-entered):not(.is-intro-playing)::before,.testimonials-carousel.is-intro-ready:not(.is-entered):not(.is-intro-playing) .review-dust{opacity:0}
+ main>.testimonials.testimonials-carousel.is-intro-playing::before{animation:review-light-emerge 600ms ease 90ms both}
+ .testimonials-carousel.is-intro-playing .review-dust{animation:review-dust-emerge 450ms ease 90ms both}
+ main>.testimonials.testimonials-carousel.is-entered::before{animation:review-light-breathe 18s ease-in-out infinite;animation-play-state:paused}
+ main>.testimonials.testimonials-carousel.is-entered.is-atmosphere-active::before{animation-play-state:running}
+}
+@keyframes review-light-emerge{from{opacity:0}to{opacity:.90}}
+@keyframes review-dust-emerge{from{opacity:0}to{opacity:1}}
+@keyframes review-light-breathe{0%,100%{opacity:.90;transform:scale(1)}50%{opacity:.97;transform:scale(1.012)}}
+@media screen and (max-width:760px){
+ main>.testimonials.testimonials-carousel{--review-ambient-y:55%;--review-floor-y:77%;--review-beam-left:135deg;--review-beam-right:173deg}
+ @keyframes review-card-reveal{
+  from{opacity:0;visibility:hidden;transform:translate(-50%,-50%) translateX(calc(var(--review-slot,0)*var(--review-space))) translateY(16px) scale(calc(var(--review-scale,1)*.97))}
+  1%{visibility:visible}
+  to{opacity:var(--review-opacity,1);visibility:visible;transform:translate(-50%,-50%) translateX(calc(var(--review-slot,0)*var(--review-space))) scale(var(--review-scale,1))}
+ }
+ .testimonials-carousel.is-intro-playing .review-card[data-far="true"],.testimonials-carousel.is-intro-playing .review-edge-copy{animation:none;opacity:0;visibility:hidden}
+}
+@media(prefers-reduced-motion:reduce){
+ .testimonials-carousel:is(.is-intro-ready,.is-intro-playing) :is(.testimonials-heading,.review-nav,.reviews-sample-note){animation:none!important;visibility:visible;opacity:1}
+ .testimonials-carousel:is(.is-intro-ready,.is-intro-playing) .review-card{animation:none!important;visibility:visible}
+ main>.testimonials.testimonials-carousel::before{animation:none!important;opacity:.90!important;transform:none!important}
+ .testimonials-carousel .review-dust{animation:none!important;opacity:.45!important}
+}
+@media print{.testimonials-carousel .review-dust{display:none}.testimonials-carousel:is(.is-intro-ready,.is-intro-playing) :is(.testimonials-heading,.review-card,.review-nav,.reviews-sample-note){animation:none!important;visibility:visible!important}}
+
+/* Keep the flat perspective surface from swallowing hits on recessed cards.
+   The parent surface also resolves projected card clicks for affected engines. */
+.testimonials-carousel .review-stage{pointer-events:none}
+.testimonials-carousel .review-card{pointer-events:auto}
+@media(max-width:760px){.testimonials-carousel .review-card[data-far="true"],.testimonials-carousel .review-edge-copy{pointer-events:none}}
+
+/* Typography follows rendered size: the fluid quote reaches 20px at 1290.322581px.
+   Mobile quotes (19px) and small descriptions/metadata keep the sans-serif body. */
+@media(min-width:1290.322581px){
+ .testimonials-carousel .review-card q{font-family:var(--display);font-weight:300}
+}
+@media(max-width:760px){
+ .testimonials-carousel .review-customer{font-family:var(--body)}
+}

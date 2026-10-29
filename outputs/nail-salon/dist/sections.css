@@ -1,0 +1,217 @@
+/* Native sticky layers; stacking.js triggers complete 900ms section transitions. */
+@media screen {
+  /* The document remains the scroll surface; JS manages complete landing points. */
+  html {
+    scroll-snap-type: none;
+    scroll-padding-top: 0;
+    scroll-padding-bottom: 0;
+  }
+
+  main > section {
+    min-height: 100vh;
+    min-height: 100svh;
+    height: auto;
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
+    scroll-margin-top: 0;
+    scroll-margin-bottom: 0;
+  }
+
+  /* Keep the shorter footer reachable without making it a full-height scene. */
+  .site-footer {
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
+    scroll-margin-top: 0;
+    scroll-margin-bottom: 0;
+  }
+
+  /* Keep the existing hero composition while putting its main copy in normal flow. */
+  .hero.hero-showcase {
+    min-height: 100vh;
+    min-height: 100svh;
+    height: auto;
+    padding-top: 21.5vh;
+    padding-top: 21.5svh;
+    padding-bottom: clamp(150px, 18.8vh, 210px);
+    padding-bottom: clamp(150px, 18.8svh, 210px);
+  }
+
+  .hero-showcase .hero-content {
+    position: relative;
+    inset: auto;
+    margin-left: 5.3%;
+  }
+
+  /* Preserve the five-column scene and its existing mobile horizontal scrolling. */
+  .services-showcase,
+  .services-showcase .service-panels {
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  .services-showcase .service-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: auto;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 32px var(--panel-inset);
+  }
+
+  .services-showcase .service-copy {
+    position: relative;
+    inset: auto;
+    width: 100%;
+  }
+
+  /* Distribute spare vertical space without changing the internal compositions. */
+  main > .gallery,
+  main > .visit {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  main > .testimonials {
+    align-content: center;
+    align-items: start;
+  }
+}
+
+@media screen {
+  /* No scroll container or transform on the sticky ancestors. Isolation keeps the
+     scene layers below the existing masthead, mobile booking bar and dialogs. */
+  #main { isolation: isolate; }
+
+  /* Avoid a second CSS smooth scroll trailing the controller's eased writes. */
+  html.is-section-navigation { scroll-behavior: auto !important; }
+  html.is-section-navigation dialog[open] { overscroll-behavior: contain; }
+  .section-scroll-origin { display: block; position: relative; height: 0; margin: 0; padding: 0; border: 0; pointer-events: none; }
+
+  #main > section {
+    position: sticky;
+    top: 0;
+    top: min(0px, calc(100svh - var(--stack-height, 100svh)));
+    z-index: var(--stack-order, 1);
+  }
+
+  #main > section:nth-of-type(1) { --stack-order: 1; }
+  #main > section:nth-of-type(2) { --stack-order: 2; }
+  #main > section:nth-of-type(3) { --stack-order: 3; }
+  #main > section:nth-of-type(4) { --stack-order: 4; }
+  #main > section:nth-of-type(5) { --stack-order: 5; }
+
+  /* The existing concept notice remains visible between the first two scenes. */
+  #main > .demo { position: relative; z-index: 2; background: var(--paper); }
+
+  /* Fully covered scenes are still in the viewport geometrically. Pause their
+     decorative loops until they are uncovered on the return scroll. */
+  #main > .is-stack-covered * { animation-play-state: paused !important; }
+}
+
+@media screen and (max-height: 820px) and (min-width: 901px) {
+  .hero.hero-showcase {
+    padding-top: 20vh;
+    padding-top: 20svh;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .hero.hero-showcase {
+    padding-top: 24vh;
+    padding-top: 24svh;
+  }
+}
+
+@media screen and (min-width: 761px) and (max-width: 1100px) {
+  .services-showcase .service-panel {
+    padding-top: 27px;
+    padding-bottom: 27px;
+  }
+}
+
+@media screen and (max-width: 760px) {
+  .hero.hero-showcase {
+    padding-top: 23vh;
+    padding-top: 23svh;
+    padding-bottom: max(156px, 20vh);
+    padding-bottom: max(156px, 20svh);
+  }
+
+  .hero-showcase .hero-content {
+    margin-left: 6%;
+  }
+
+  .services-showcase .service-panel {
+    padding-top: 28px;
+    padding-bottom: 28px;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .hero.hero-showcase {
+    padding-top: 22vh;
+    padding-top: 22svh;
+  }
+
+  .services-showcase .service-panel {
+    padding-top: 25px;
+    padding-bottom: 25px;
+  }
+}
+
+/* Shared primary headings below the hero. Preserve alignment and line breaks.
+   Hidden section labels, service-card titles and dialog headings stay separate. */
+#main > section:not(.hero) h2:not(.visually-hidden) {
+  font-family:var(--display);
+  font-size:clamp(36px,4vw,64px);
+  font-weight:300;
+  font-style:normal;
+  line-height:1.15;
+  letter-spacing:-.025em;
+  color:var(--ink);
+}
+#main > section:not(.hero) h2:not(.visually-hidden) span {
+  font-style:inherit;
+  color:inherit;
+}
+@media(max-width:760px) {
+  #main > section:not(.hero) h2:not(.visually-hidden) {
+    font-size:clamp(32px,8.2vw,50px);
+  }
+}
+
+/* Champagne emphasis shares the same scale and weight as each section heading. */
+#main > section:not(.hero) h2:not(.visually-hidden) > span:last-child {
+  font-style:italic;
+  color:#d8b995;
+}
+
+/* Match each service caption's bottom inset to the hero content at every breakpoint. */
+@media screen {
+  #main > .services-showcase { --service-bottom-inset:clamp(40px,calc(3.5svh + 16px),56px); }
+  #main > .services-showcase .service-panel { padding-bottom:var(--service-bottom-inset); }
+}
+@media screen and (max-width:1100px) {
+  #main > .services-showcase { --service-bottom-inset:calc(clamp(40px,calc(3.5svh + 16px),56px) + 88px); }
+}
+@media screen and (max-width:760px) {
+  #main > .services-showcase { --service-bottom-inset:calc(max(36px,calc(32px + env(safe-area-inset-bottom))) + 88px); }
+}
+
+/* Shared section tag: same typography/rule, with alignment owned by its scene. */
+:root{--section-tag-size:10px;--section-tag-tracking:2.4px;--section-tag-rule-width:50px;--section-tag-rule-color:#d8b995}
+#main :is(#gallery,#testimonials) .section-tag{font-family:var(--body);font-size:var(--section-tag-size);font-weight:400;font-style:normal;line-height:1.6;letter-spacing:var(--section-tag-tracking);color:var(--ink);text-transform:uppercase;padding:0;margin:0 0 20px}
+#main :is(#gallery,#testimonials) .section-tag::after{content:"";display:block;width:var(--section-tag-rule-width);height:1px;background:var(--section-tag-rule-color);margin-top:17px;margin-inline:0}
+#main #testimonials .section-tag::after{margin-inline:auto}
+#main #testimonials .review-heading-rule{display:none}
+@media(max-width:760px){
+ #main :is(#gallery,#testimonials) .section-tag{--section-tag-size:9px;--section-tag-tracking:2px;--section-tag-rule-width:42px;margin-bottom:16px}
+ #main :is(#gallery,#testimonials) .section-tag::after{margin-top:11px}
+}
+
+/* Shared section supporting-copy size, including responsive overrides.
+   Keep scene-specific line breaks, margins, weight and alignment unchanged. */
+:root{--section-subtext-size:14px}
+#main :is(#gallery .edit-description,#testimonials .review-description){font-size:var(--section-subtext-size)}

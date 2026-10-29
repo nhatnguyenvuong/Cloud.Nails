@@ -1,0 +1,333 @@
+/* Maison Nacre button system. Last-loaded adapters preserve all existing hooks,
+   positioning, selection logic and section animations. */
+:root{
+  /* Primitive palette and scale. */
+  --mn-champagne:#d8b995;--mn-champagne-light:#ead0af;--mn-champagne-deep:#c6a47f;
+  --mn-ivory:#ece8df;--mn-ink:#17110c;--mn-espresso:#18130f;--mn-muted:#bdb5a8;
+  --mn-veil:#0c0907b8;--mn-veil-hover:#211910e6;
+  --mn-line:#d8b99559;--mn-line-strong:#d8b99580;--mn-wash:#d8b99512;--mn-error:#c4967f;
+  --mn-space-2:8px;--mn-space-3:12px;--mn-space-4:16px;--mn-space-5:20px;
+  /* Semantic roles. */
+  --action-accent:var(--mn-champagne);--action-on-accent:var(--mn-ink);
+  --action-hover:var(--mn-champagne-light);--action-pressed:var(--mn-champagne-deep);
+  --action-foreground:var(--mn-ivory);--action-muted:var(--mn-muted);
+  --action-border:var(--mn-line-strong);--action-subtle:var(--mn-wash);--action-surface:var(--mn-espresso);
+  --action-icon-surface:var(--mn-veil);--action-icon-hover:var(--mn-veil-hover);
+  --action-focus:var(--mn-champagne);--action-error:var(--mn-error);
+  /* Shared component contract. */
+  --button-font:var(--body);--button-font-size:14px;--button-font-weight:400;
+  --button-line-height:20px;--button-letter-spacing:.01em;--button-height:48px;
+  --button-height-compact:44px;--button-pad-x:var(--mn-space-5);--button-pad-y:var(--mn-space-3);
+  --button-gap:var(--mn-space-4);--button-radius:0px;--button-border-width:1px;
+  --button-icon-radius:50%;--button-icon-size:18px;--button-icon-box:44px;--button-calendar-cell:40px;
+  --button-focus-width:2px;--button-focus-offset:3px;--button-disabled-opacity:.4;
+  --button-duration:180ms;--button-ease:cubic-bezier(.2,.7,.2,1);
+}
+
+.button,
+.masthead .nav-book,
+.hero.hero-showcase .hero-actions .hero-book.button,
+.visit.hands-scene .hands-book.button,
+.mobile-book .button,
+#booking #booking-form .sd-submit,
+#booking .sd-zalo,
+#booking .booking-back{display:inline-flex;align-items:center;justify-content:space-between;min-height:var(--button-height);padding:var(--button-pad-y) var(--button-pad-x);gap:var(--button-gap);border:var(--button-border-width) solid var(--action-accent);border-radius:var(--button-radius);font-family:var(--button-font);font-size:var(--button-font-size);font-weight:var(--button-font-weight);line-height:var(--button-line-height);letter-spacing:var(--button-letter-spacing);text-decoration:none;text-transform:none;white-space:nowrap;box-shadow:none;cursor:pointer;touch-action:manipulation;transition:background-color var(--button-duration) var(--button-ease),color var(--button-duration) var(--button-ease),border-color var(--button-duration) var(--button-ease)}
+
+.button,
+.masthead .nav-book,
+.hero.hero-showcase .hero-actions .hero-book.button,
+.visit.hands-scene .hands-book.button,
+.mobile-book .button,
+#booking #booking-form .sd-submit{background:var(--action-accent);color:var(--action-on-accent)}
+
+#booking .sd-zalo,
+#booking .booking-back{background:transparent;color:var(--action-accent)}
+
+.masthead .nav-book::before{content:none}
+
+.button>span,
+.masthead .nav-book>span,
+#booking .sd-submit>span,
+#booking .sd-zalo>span{flex:none;margin:0;font-family:var(--body);font-size:var(--button-icon-size);font-weight:400;line-height:1}
+
+.site-footer .footer-social,
+.service-open,
+.testimonials-carousel .review-step,
+.edit-step,
+.edit-viewer-close,
+.hero-showcase .hero-social,
+#booking .close,
+#booking .sd-image-step,
+#booking .sd-calendar-nav-button{display:inline-flex;align-items:center;justify-content:center;width:var(--button-icon-box);height:var(--button-icon-box);min-width:var(--button-icon-box);min-height:var(--button-icon-box);flex:0 0 var(--button-icon-box);padding:0;border:var(--button-border-width) solid var(--action-border);border-radius:var(--button-icon-radius);background:var(--action-icon-surface);color:var(--action-accent);font-family:var(--button-font);font-size:var(--button-icon-size);font-weight:400;line-height:1;box-shadow:none;cursor:pointer;touch-action:manipulation;transition:background-color var(--button-duration) var(--button-ease),color var(--button-duration) var(--button-ease),border-color var(--button-duration) var(--button-ease)}
+
+.service-open svg,
+.testimonials-carousel .review-step svg,
+.hero-showcase .hero-social svg,
+.site-footer .footer-social svg,
+#booking .sd-image-step svg{width:var(--button-icon-size);height:var(--button-icon-size);flex:none;pointer-events:none}
+
+.edit-viewer-close,
+#booking .close{font-size:24px;font-weight:300}
+
+.service-open:hover svg{transform:none}
+
+#booking .sd-select-trigger,
+#booking .sd-date-trigger{min-height:var(--button-height);padding:var(--button-pad-y) var(--mn-space-3);border-radius:var(--button-radius);border:var(--button-border-width) solid var(--action-border);background:#12100e;color:var(--action-foreground);font:var(--button-font-weight) var(--button-font-size)/var(--button-line-height) var(--button-font);letter-spacing:var(--button-letter-spacing);box-shadow:none;transition:background-color var(--button-duration) var(--button-ease),border-color var(--button-duration) var(--button-ease)}
+
+#booking #booking-form input:not(.sd-native-date),
+#booking #booking-form select:not(.sd-native-select){min-height:var(--button-height)}
+
+#booking .sd-select-trigger.is-placeholder,
+#booking .sd-date-trigger.is-placeholder{color:var(--action-muted)}
+
+#booking .sd-select-trigger[aria-expanded="true"],
+#booking .sd-date-trigger[aria-expanded="true"]{border-color:var(--action-accent);background:var(--action-surface)}
+
+#booking .sd-select-trigger[aria-invalid="true"],
+#booking .sd-date-trigger[aria-invalid="true"]{border-color:var(--action-error)}
+
+.site-footer .footer-link,
+#edit-original,
+.back-top,
+#booking .sd-calendar-action{display:inline-flex;align-items:center;justify-content:center;min-height:var(--button-height-compact);padding:var(--mn-space-2) 0;border:0;border-radius:var(--button-radius);background:transparent;color:var(--action-accent);font:400 13px/var(--button-line-height) var(--button-font);letter-spacing:var(--button-letter-spacing);text-decoration:underline;text-decoration-color:transparent;text-underline-offset:5px;touch-action:manipulation;transition:color var(--button-duration) var(--button-ease),text-decoration-color var(--button-duration) var(--button-ease)}
+
+.masthead .menu{min-height:var(--button-height-compact);padding:var(--mn-space-2) var(--mn-space-3);gap:var(--mn-space-3);border:var(--button-border-width) solid var(--action-border);border-radius:var(--button-radius);background:transparent;color:var(--action-foreground);font:400 13px/var(--button-line-height) var(--button-font);letter-spacing:var(--button-letter-spacing);touch-action:manipulation}
+
+.masthead .menu>span{font-family:var(--body);font-size:var(--button-icon-size);line-height:1}
+
+.gallery-editorial .edit-categories button{min-height:var(--button-height-compact);border-radius:var(--button-radius);color:var(--action-muted);transition:color var(--button-duration) var(--button-ease)}
+
+.gallery-editorial .edit-categories button[aria-selected="true"]{color:var(--action-accent)}
+
+#booking .sd-thumb{min-height:var(--button-height-compact);border-width:var(--button-border-width);border-radius:var(--button-radius);transition:opacity var(--button-duration) var(--button-ease),border-color var(--button-duration) var(--button-ease)}
+
+#booking .sd-thumb[aria-pressed="true"]{border-color:var(--action-accent);opacity:1}
+
+.service-inspect,
+.testimonials-carousel .review-card,
+.gallery-editorial .edit-card{border-radius:var(--button-radius)}
+
+#booking .sd-calendar-day{min-height:var(--button-calendar-cell);padding:6px 0;border-radius:var(--button-radius);font:400 var(--button-font-size)/var(--button-line-height) var(--button-font);transition:background-color var(--button-duration) var(--button-ease),color var(--button-duration) var(--button-ease),border-color var(--button-duration) var(--button-ease)}
+
+#booking .sd-calendar-day.is-selected{background:var(--action-accent);color:var(--action-on-accent);border-color:var(--action-accent)}
+
+#booking .sd-select-option{min-height:var(--button-height-compact);border-radius:var(--button-radius);font:400 var(--button-font-size)/var(--button-line-height) var(--button-font)}
+
+@media(hover:hover){
+
+.button:hover,
+.masthead .nav-book:hover,
+.hero.hero-showcase .hero-actions .hero-book.button:hover,
+.visit.hands-scene .hands-book.button:hover,
+.mobile-book .button:hover,
+#booking #booking-form .sd-submit:hover{background:var(--action-hover);color:var(--action-on-accent);border-color:var(--action-hover)}
+
+#booking .sd-zalo:hover,
+#booking .booking-back:hover,
+.masthead .menu:hover{background:var(--action-subtle);color:var(--action-foreground);border-color:var(--action-accent)}
+
+.site-footer .footer-social:hover,
+.service-open:hover,
+.testimonials-carousel .review-step:hover,
+.edit-step:hover,
+.edit-viewer-close:hover,
+.hero-showcase .hero-social:hover,
+#booking .close:hover,
+#booking .sd-image-step:hover,
+#booking .sd-calendar-nav-button:hover,
+.hero-showcase .hero-social:not(:disabled):hover,
+#booking .sd-calendar-nav-button:hover:not(:disabled){background:var(--action-icon-hover);color:var(--action-foreground);border-color:var(--action-accent)}
+
+#booking .sd-select-trigger:hover,
+#booking .sd-date-trigger:hover{background:var(--action-surface);border-color:var(--action-accent)}
+
+.site-footer .footer-link:hover,
+#edit-original:hover,
+.back-top:hover,
+#booking .sd-calendar-action:hover{color:var(--action-foreground);text-decoration-color:currentColor}
+
+.gallery-editorial .edit-categories button:hover{color:var(--action-foreground)}
+
+#booking .sd-calendar-day:hover:not(:disabled),
+#booking .sd-select-option:hover,
+#booking .sd-select-option.is-active{background:var(--action-subtle);color:var(--action-foreground)}
+
+#booking .sd-calendar-day.is-selected:hover{background:var(--action-hover);color:var(--action-on-accent)}
+}
+
+@media(hover:none){
+
+.button:hover,
+.masthead .nav-book:hover,
+.hero.hero-showcase .hero-actions .hero-book.button:hover,
+.visit.hands-scene .hands-book.button:hover,
+.mobile-book .button:hover,
+#booking #booking-form .sd-submit:hover{background:var(--action-accent);color:var(--action-on-accent);border-color:var(--action-accent)}
+
+#booking .sd-zalo:hover,
+#booking .booking-back:hover{background:transparent;color:var(--action-accent);border-color:var(--action-accent)}
+
+.site-footer .footer-social:hover,
+.service-open:hover,
+.testimonials-carousel .review-step:hover,
+.edit-step:hover,
+.edit-viewer-close:hover,
+.hero-showcase .hero-social:hover,
+#booking .close:hover,
+#booking .sd-image-step:hover,
+#booking .sd-calendar-nav-button:hover,
+.hero-showcase .hero-social:not(:disabled):hover,
+#booking .sd-calendar-nav-button:hover:not(:disabled){background:var(--action-icon-surface);color:var(--action-accent);border-color:var(--action-border)}
+}
+
+.button:active,
+.masthead .nav-book:active,
+.hero.hero-showcase .hero-actions .hero-book.button:active,
+.visit.hands-scene .hands-book.button:active,
+.mobile-book .button:active,
+#booking #booking-form .sd-submit:active{background:var(--action-pressed);color:var(--action-on-accent);border-color:var(--action-pressed)}
+
+#booking .sd-zalo:active,
+#booking .booking-back:active,
+.site-footer .footer-social:active,
+.service-open:active,
+.testimonials-carousel .review-step:active,
+.edit-step:active,
+.edit-viewer-close:active,
+.hero-showcase .hero-social:active,
+#booking .close:active,
+#booking .sd-image-step:active,
+#booking .sd-calendar-nav-button:active,
+.masthead .menu:active{background:var(--action-subtle);color:var(--action-accent);border-color:var(--action-accent)}
+
+.site-footer .footer-social:active,
+.service-open:active,
+.testimonials-carousel .review-step:active,
+.edit-step:active,
+.edit-viewer-close:active,
+.hero-showcase .hero-social:active,
+#booking .close:active,
+#booking .sd-image-step:active,
+#booking .sd-calendar-nav-button:active{background:var(--action-icon-hover);color:var(--action-accent);border-color:var(--action-accent)}
+
+#booking .sd-select-trigger[aria-invalid="true"],
+#booking .sd-date-trigger[aria-invalid="true"]{border-color:var(--action-error)}
+
+.masthead .menu[aria-expanded="true"]{background:var(--action-subtle);border-color:var(--action-accent);color:var(--action-foreground)}
+
+.button:focus-visible,
+.masthead .nav-book:focus-visible,
+.hero.hero-showcase .hero-actions .hero-book.button:focus-visible,
+.visit.hands-scene .hands-book.button:focus-visible,
+.mobile-book .button:focus-visible,
+#booking #booking-form .sd-submit:focus-visible,
+#booking .sd-zalo:focus-visible,
+#booking .booking-back:focus-visible,
+.site-footer .footer-social:focus-visible,
+.service-open:focus-visible,
+.testimonials-carousel .review-step:focus-visible,
+.edit-step:focus-visible,
+.edit-viewer-close:focus-visible,
+.hero-showcase .hero-social:focus-visible,
+#booking .close:focus-visible,
+#booking .sd-image-step:focus-visible,
+#booking .sd-calendar-nav-button:focus-visible,
+#booking .sd-select-trigger:focus-visible,
+#booking .sd-date-trigger:focus-visible,
+.site-footer .footer-link:focus-visible,
+#edit-original:focus-visible,
+.back-top:focus-visible,
+#booking .sd-calendar-action:focus-visible,
+.gallery-editorial .edit-categories button:focus-visible,
+#booking .sd-thumb:focus-visible,
+#booking .sd-calendar-day:focus-visible,
+#booking .booking-service-choice:focus-visible,
+#booking .booking-slot:focus-visible,
+.service-inspect:focus-visible,
+.testimonials-carousel .review-card:focus-visible,
+.gallery-editorial .edit-card:focus-visible,
+.masthead .menu:focus-visible{outline:var(--button-focus-width) solid var(--action-focus);outline-offset:var(--button-focus-offset)}
+
+.service-inspect:focus-visible,
+.testimonials-carousel .review-card:focus-visible,
+.gallery-editorial .edit-card:focus-visible,
+#booking .sd-thumb:focus-visible{outline-offset:-3px}
+
+#booking .sd-calendar-day:focus-visible{outline-offset:-2px}
+
+.button:disabled,
+.masthead .nav-book:disabled,
+.hero.hero-showcase .hero-actions .hero-book.button:disabled,
+.visit.hands-scene .hands-book.button:disabled,
+.mobile-book .button:disabled,
+#booking #booking-form .sd-submit:disabled,
+#booking .sd-zalo:disabled,
+#booking .booking-back:disabled,
+.site-footer .footer-social:disabled,
+.service-open:disabled,
+.testimonials-carousel .review-step:disabled,
+.edit-step:disabled,
+.edit-viewer-close:disabled,
+.hero-showcase .hero-social:disabled,
+#booking .close:disabled,
+#booking .sd-image-step:disabled,
+#booking .sd-calendar-nav-button:disabled,
+#booking .sd-select-trigger:disabled,
+#booking .sd-date-trigger:disabled,
+.masthead .menu:disabled,
+#booking .sd-calendar-day:disabled{opacity:var(--button-disabled-opacity);cursor:default;background:transparent;color:var(--action-muted);border-color:var(--action-border);box-shadow:none}
+
+#booking .sd-select-option[aria-selected="true"]{color:var(--action-accent)}
+
+/* Explicit compact variant for the narrow hero composition and paired actions. */
+@media(max-width:760px){
+ .hero.hero-showcase .hero-actions .hero-book.button{min-height:var(--button-height-compact);padding:10px 14px;gap:12px;font-size:13px}
+ .hero.hero-showcase .hero-actions .hero-book.button>span{font-size:16px}
+ #booking #booking-form .sd-submit,#booking .sd-zalo{padding:12px 14px;gap:12px;font-size:13px}
+ #booking .sd-submit>span,#booking .sd-zalo>span{font-size:16px}
+ #booking .sd-select-trigger,#booking .sd-date-trigger{font-size:16px}
+}
+@media(max-width:380px){
+ .hero.hero-showcase .hero-actions .hero-book.button{padding:10px;gap:10px;font-size:12px}
+ #booking #booking-form .sd-submit,#booking .sd-zalo{padding:12px 10px;gap:8px;font-size:12px}
+ #booking .sd-submit>span,#booking .sd-zalo>span{font-size:16px}
+}
+
+@media(prefers-reduced-motion:reduce){
+
+.button,
+.masthead .nav-book,
+.hero.hero-showcase .hero-actions .hero-book.button,
+.visit.hands-scene .hands-book.button,
+.mobile-book .button,
+#booking #booking-form .sd-submit,
+#booking .sd-zalo,
+#booking .booking-back,
+.site-footer .footer-social,
+.service-open,
+.testimonials-carousel .review-step,
+.edit-step,
+.edit-viewer-close,
+.hero-showcase .hero-social,
+#booking .close,
+#booking .sd-image-step,
+#booking .sd-calendar-nav-button,
+#booking .sd-select-trigger,
+#booking .sd-date-trigger,
+.site-footer .footer-link,
+#edit-original,
+.back-top,
+#booking .sd-calendar-action,
+.gallery-editorial .edit-categories button,
+#booking .sd-thumb,
+#booking .sd-calendar-day,
+#booking .booking-service-choice,
+#booking .booking-slot,
+.service-inspect,
+.testimonials-carousel .review-card,
+.gallery-editorial .edit-card,
+.masthead .menu,
+#booking .sd-select-option{transition:none!important}
+}
+
+@media print{.masthead .nav-book,.masthead .menu,.service-open,.hero-showcase .hero-social,.testimonials-carousel .review-step,.edit-step,.edit-viewer-close,#booking .close,#booking .sd-image-step,#booking .sd-calendar-nav-button{display:none}}
