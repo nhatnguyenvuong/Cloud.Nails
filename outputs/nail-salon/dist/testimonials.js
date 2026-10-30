@@ -10,6 +10,7 @@
   const progress=section.querySelector('.review-progress span');
   const announcement=section.querySelector('#review-announcement');
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const phone=window.matchMedia('(max-width: 47.5rem)');
   const count=cards.length,wrap=index=>(index%count+count)%count;
   let current=Math.min(2,count-1),navigationVersion=0,gesture=null,suppressClickUntil=0;
   let opened=false,introComplete=false,entryFrame=0,introTimer=0,entryObserver=null;
@@ -101,7 +102,7 @@
     cards.forEach(card=>{card.querySelector('img').loading='eager';});
     if(reduced.matches){finishIntro(true);return;}
     section.classList.add('is-intro-playing');
-    introTimer=window.setTimeout(()=>finishIntro(),1300);
+    introTimer=window.setTimeout(()=>finishIntro(),phone.matches?1800:1300);
   }
   function checkEntry(){
     entryFrame=0;if(disposed)return;
@@ -109,7 +110,7 @@
     const origin=section.previousElementSibling;
     const top=origin?.classList.contains('section-scroll-origin')?origin.getBoundingClientRect().top:section.getBoundingClientRect().top;
     const bounds=section.getBoundingClientRect();
-    const active=!document.hidden&&top<=1&&bounds.bottom>0&&!section.classList.contains('is-stack-covered')&&!document.documentElement.classList.contains('is-section-transitioning');
+    const active=!document.hidden&&top<=1&&bounds.bottom>0&&!document.documentElement.classList.contains('is-service-modal-open')&&!document.documentElement.classList.contains('is-gallery-modal-open')&&!section.classList.contains('is-stack-covered')&&!document.documentElement.classList.contains('is-section-transitioning');
     if(active&&!opened)beginIntro();
     // Leaving never blocks section navigation. Settle an interrupted entrance so
     // the existing once-only architecture returns to a fully usable composition.
@@ -141,12 +142,12 @@
     function resize(){
       const box=section.getBoundingClientRect();
       const nextWidth=Math.max(1,Math.round(box.width)),nextHeight=Math.max(1,Math.round(box.height));
-      const nextSmall=nextWidth<=760,nextDpr=Math.min(window.devicePixelRatio||1,nextSmall?1.5:2);
+      const nextSmall=nextWidth<=1024,nextDpr=Math.min(window.devicePixelRatio||1,nextSmall?Math.min(1.25,Math.sqrt(1400000/(nextWidth*nextHeight))):2);
       if(width===nextWidth&&height===nextHeight&&dpr===nextDpr&&densityPreference===reduced.matches)return;
       width=nextWidth;height=nextHeight;dpr=nextDpr;small=nextSmall;densityPreference=reduced.matches;
       canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
       context.setTransform(dpr,0,0,dpr,0,0);
-      const count=reduced.matches?(small?10:18):(small?24:Math.min(68,Math.round(width*height/23000)+22));
+      const count=reduced.matches?(small?10:18):(small?18:Math.min(68,Math.round(width*height/23000)+22));
       particles=Array.from({length:count},(_,i)=>{
         const x=Math.random(),stream=i%5,depth=Math.random();
         const y=stream===0?.18+x*.3+random(-.08,.08):stream===1?.7-x*.26+random(-.08,.08):Math.random();
@@ -171,7 +172,7 @@
     }
     function tick(stamp){
       frame=0;if(!active||reduced.matches)return;
-      if(!last||stamp-last>=1000/(small?24:30)){
+      if(!last||stamp-last>=1000/(small?20:30)){
         const delta=last?Math.min((stamp-last)/1000,.07):0;last=stamp;draw(delta);
       }
       frame=queueFrame(tick);

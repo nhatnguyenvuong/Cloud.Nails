@@ -6,6 +6,7 @@
   const images=[...section.querySelectorAll('.service-photo')];
   const root=document.documentElement,main=section.parentElement;
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const phone=window.matchMedia('(max-width: 47.5rem)');
   let complete=false,requested=false,playing=false,disposed=false;
   let frame=0,timer=0,grace=0,observer=null,assetsReady=false,assetsSettled=false;
   const removers=[],assetCleanup=new Set();
@@ -33,7 +34,7 @@
   function begin(){
     if(complete||playing||disposed||!active())return;
     window.clearTimeout(grace);grace=0;
-    if(reduced.matches||!assetsReady){finish();return;}
+    if(reduced.matches||(!assetsReady&&!phone.matches)){finish();return;}
     playing=true;section.classList.add('is-service-opening');
     timer=window.setTimeout(finish,1600);
   }
@@ -43,7 +44,7 @@
     if(!active()){if(requested)finish();return;}
     if(requested)return;requested=true;
     if(reduced.matches)finish();
-    else if(assetsReady)begin();
+    else if(assetsReady||phone.matches)begin();
     else if(assetsSettled)finish();
     else grace=window.setTimeout(()=>{if(active()&&assetsReady)begin();else finish();},100);
   }
@@ -80,7 +81,7 @@
   Promise.all(images.map(warm)).then(results=>{
     if(complete||disposed)return;
     assetsSettled=true;assetsReady=results.every(Boolean);
-    if(requested&&active()){if(assetsReady)begin();else finish();}
+    if(requested&&active()){if(assetsReady||phone.matches)begin();else finish();}
   });
   // Consume only the existing navigator's covered/transition classes. No new
   // scroll listener, IntersectionObserver or gesture ownership is introduced.

@@ -7,6 +7,9 @@
  const steps=[...dialog.querySelectorAll('[data-booking-step]')],progress=[...dialog.querySelectorAll('[data-progress]')];
  const fields={name:$('#appointment-name'),phone:$('#appointment-phone'),notes:$('#appointment-notes')};
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+ const compactViewport=window.matchMedia('(max-width: 64rem)');
+ const serviceRows=window.matchMedia('(max-width: 47.5rem)');
+ let viewportFrame=0;
  let state=C.draft(),provider=C.requestAvailability,mode='booking',opener=null,lock=null;
  let generation=0,loadVersion=0,loadAbort=null,sendAbort=null,closeTimer=0,closing=false,loading=false,sending=false,slots=[];
  const titles=['Chọn dịch vụ','Chọn ngày & giờ','Thông tin của bạn','Kiểm tra lịch hẹn'];
@@ -115,20 +118,40 @@
  function showSuccess(result){
   const delivered=result.mode==='live'&&result.requestReceived===true;
   form.hidden=true;$('.booking-heading').hidden=true;flow.classList.add('is-booking-complete');$('#booking-outcome').hidden=false;
-  $('#booking-success-description').textContent=delivered?'Yêu cầu đặt lịch của bạn đã được gửi. Cloud.Nails sẽ sớm liên hệ để xác nhận lịch hẹn.':'Bạn đã hoàn tất trải nghiệm đặt lịch. Thông tin chưa được gửi đến Cloud.Nails.';
+  $('#booking-success-description').textContent=delivered?'Yêu cầu đặt lịch của bạn đã được gửi. Van.Nails sẽ sớm liên hệ để xác nhận lịch hẹn.':'Bạn đã hoàn tất trải nghiệm đặt lịch. Thông tin chưa được gửi đến Van.Nails.';
   $('#booking-demo-note').hidden=delivered;dialog.setAttribute('aria-labelledby','booking-success-title');dialog.setAttribute('aria-describedby','booking-success-description');
   $('.booking-outcome-scroll').scrollTop=0;$('#booking-success-title').focus({preventScroll:true});
  }
  $('#booking-done').addEventListener('click',close);
+ function fitViewport(){
+  viewportFrame=0;if(!dialog.open)return;
+  const viewport=window.visualViewport;
+  dialog.classList.toggle('is-short-viewport',compactViewport.matches&&(viewport?.height||window.innerHeight)<560);
+  dialog.style.setProperty('--booking-viewport-height',compactViewport.matches?Math.floor(viewport?.height||window.innerHeight)+'px':'');
+  dialog.style.setProperty('--booking-viewport-offset',compactViewport.matches?Math.max(0,Math.floor(viewport?.offsetTop||0))+'px':'');
+  if(compactViewport.matches&&dialog.contains(document.activeElement)&&document.activeElement?.closest?.('.booking-step-scroll'))focusInside(document.activeElement);
+ }
+ function queueViewportFit(){if(dialog.open&&!viewportFrame)viewportFrame=requestAnimationFrame(fitViewport);}
+ window.addEventListener('resize',queueViewportFit,{passive:true});
+ window.visualViewport?.addEventListener('resize',queueViewportFit,{passive:true});
+ window.visualViewport?.addEventListener('scroll',queueViewportFit,{passive:true});
+ compactViewport.addEventListener?.('change',queueViewportFit);
  function lockPage(){if(lock!==null)return;const body=document.body;lock=body.style.paddingRight;const gutter=Math.max(0,window.innerWidth-document.documentElement.clientWidth);if(gutter)body.style.paddingRight=(parseFloat(getComputedStyle(body).paddingRight)||0)+gutter+'px';document.documentElement.classList.add('is-service-modal-open');}
  function unlock(){if(lock===null)return;document.body.style.paddingRight=lock;lock=null;document.documentElement.classList.remove('is-service-modal-open');}
- function prepare(source){clearTimeout(closeTimer);closing=false;dialog.classList.remove('is-closing');generation++;abortLoad();sendAbort?.abort();sending=false;if(source&&!dialog.contains(source))opener=source;lockPage();if(!dialog.open)dialog.showModal();}
+ function prepare(source){clearTimeout(closeTimer);closing=false;dialog.classList.remove('is-closing');generation++;abortLoad();sendAbort?.abort();sending=false;if(source&&!dialog.contains(source))opener=source;lockPage();if(!dialog.open)dialog.showModal();fitViewport();}
  function openBooking({service,source}={}){
   const selected=byService(service);prepare(source);mode='booking';state=C.draft(selected?.id);form.reset();Object.values(fields).forEach(f=>f.value='');contactErrors(false);setError('');selectService();renderStep();
  }
  function openDetail(service,source){const selected=byService(service);if(!selected)return;prepare(source);mode='detail';showcase.render(selected);flow.hidden=true;detail.hidden=false;dialog.classList.remove('is-booking-flow');dialog.setAttribute('aria-labelledby','service-detail-title');dialog.setAttribute('aria-describedby','service-detail-description');$('.sd-scroll').scrollTop=0;$('#service-detail-title').focus({preventScroll:true});}
  function close(){if(!dialog.open||closing)return;closing=true;generation++;abortLoad();sendAbort?.abort();showcase.clear();if(reduced.matches){dialog.close();return;}dialog.classList.add('is-closing');closeTimer=setTimeout(()=>dialog.close(),180);}
+ // On phones the row and its arrow share the detail action. Booking remains
+ // available through the fixed CTA and the selected service's detail dialog.
+ const serviceArrows=[...document.querySelectorAll('.service-open[data-service]')];
+ function labelServiceRows(){serviceArrows.forEach(button=>button.setAttribute('aria-label',(serviceRows.matches?'Xem chi tiết dịch vụ ':'Đặt lịch hẹn dịch vụ ')+button.dataset.service));}
+ labelServiceRows();serviceRows.addEventListener?.('change',labelServiceRows);
  document.addEventListener('click',event=>{
+  const rowArrow=event.target.closest?.('.service-open[data-service]');
+  if(serviceRows.matches&&rowArrow){event.preventDefault();openDetail(rowArrow.dataset.service,rowArrow);return;}
   const inspect=event.target.closest?.('[data-service-detail]');if(inspect){event.preventDefault();openDetail(inspect.dataset.serviceDetail,inspect);return;}
   const button=event.target.closest?.('[data-book]');if(!button)return;event.preventDefault();window.closeMenu?.();document.querySelector('#navigation')?.classList.remove('open');document.querySelector('.menu')?.setAttribute('aria-expanded','false');
   openBooking({service:button.hasAttribute('data-book-current')?showcase.current().id:button.dataset.service,source:button});
@@ -138,7 +161,7 @@
  $('.close').addEventListener('click',close);dialog.addEventListener('cancel',event=>{event.preventDefault();close();});
  let backdrop=false;function outside(e){const r=dialog.getBoundingClientRect();return e.target===dialog&&(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom);}
  dialog.addEventListener('pointerdown',e=>backdrop=outside(e));dialog.addEventListener('click',e=>{if(backdrop&&outside(e))close();backdrop=false;});
- dialog.addEventListener('close',()=>{generation++;abortLoad();sendAbort?.abort();clearTimeout(closeTimer);closing=false;sending=false;dialog.classList.remove('is-closing');unlock();state=C.draft();Object.values(fields).forEach(f=>f.value='');$('#booking-review').replaceChildren();$('#booking-contact-summary').textContent='';$('#booking-success-description').textContent='';$('#booking-demo-note').hidden=true;$('#booking-outcome').hidden=true;flow.classList.remove('is-booking-complete');$('.booking-heading').hidden=false;if(opener?.isConnected)opener.focus({preventScroll:true});});
+ dialog.addEventListener('close',()=>{generation++;abortLoad();sendAbort?.abort();clearTimeout(closeTimer);closing=false;sending=false;dialog.classList.remove('is-closing');unlock();cancelAnimationFrame(viewportFrame);viewportFrame=0;dialog.style.setProperty('--booking-viewport-height','');dialog.style.setProperty('--booking-viewport-offset','');dialog.classList.remove('is-short-viewport');state=C.draft();Object.values(fields).forEach(f=>f.value='');$('#booking-review').replaceChildren();$('#booking-contact-summary').textContent='';$('#booking-success-description').textContent='';$('#booking-demo-note').hidden=true;$('#booking-outcome').hidden=true;flow.classList.remove('is-booking-complete');$('.booking-heading').hidden=false;if(opener?.isConnected)opener.focus({preventScroll:true});});
  window.addEventListener('pagehide',()=>{if(dialog.open)dialog.close();unlock();});reduced.addEventListener?.('change',()=>{if(reduced.matches&&closing)dialog.close();});
  window.MaisonNacreBooking={open:openBooking,showService:openDetail,close,configure({availabilityProvider,submitBooking}={}){if(dialog.open)throw new Error('Close the modal before configuring booking.');if(availabilityProvider){if(typeof availabilityProvider.isDateAvailable!=='function'||typeof availabilityProvider.loadSlots!=='function')throw new Error('A valid provider is required.');provider=availabilityProvider;}submission.configure(submitBooking);}};
 })();

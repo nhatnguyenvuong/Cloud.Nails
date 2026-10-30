@@ -6,6 +6,8 @@
   const assets=[...scene.querySelectorAll('.creation-background img, .creation-asset')];
   const footer=scene.querySelector('.hands-footer');
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const compact=window.matchMedia('(max-width: 64rem)');
+  const art=scene.querySelector('.hands-art-space');
   let visible=false,started=false,complete=false,loading=false,ready=false;
   let frame=0,loadTimeout=0;
 
@@ -13,7 +15,9 @@
     frame=0;
     const width=scene.clientWidth,height=scene.clientHeight;
     if(!width||!height)return;
-    const contact={x:width*.5,y:height*.49};
+    const artBox=compact.matches?art?.getBoundingClientRect():null;
+    const band=artBox?.height>0?artBox:null;
+    const contact={x:width*.5,y:band?band.top-scene.getBoundingClientRect().top+band.height*.53:height*.49};
     const geometry=layers.map(layer=>{
       const img=layer.querySelector('img');
       const w=img.naturalWidth||Number(img.getAttribute('width'));
@@ -24,7 +28,7 @@
       const scale=renderScale>0?Math.min(width/w,height/h):Math.max(width/w,height/h);
       const referenceWidth=Number(img.dataset.referenceWidth)||w;
       const referenceHeight=Number(img.dataset.referenceHeight)||h;
-      const motionScale=renderScale>0?Math.max(width/referenceWidth,height/referenceHeight):scale;
+      const motionScale=renderScale>0?(band?Math.min(width/referenceWidth*1.5,band.height*.88/(referenceHeight*.87)):Math.max(width/referenceWidth,height/referenceHeight)):scale;
       const assetScale=renderScale>0?renderScale*motionScale/scale:1;
       const tipX=Number(img.dataset.tipX)*scale+(width-w*scale)/2;
       const tipY=Number(img.dataset.tipY)*scale+(height-h*scale)/2;
@@ -32,6 +36,8 @@
       const distance=Math.min(90,64*motionScale);
       return {layer,tipX,tipY,restX:contact.x-tipX,restY:contact.y-tipY,direction,distance,scale:motionScale,assetScale};
     });
+    // Mobile ring uses the measured art band without changing either hand.
+    if(band)scene.style.setProperty('--hands-art-height',band.height+'px');
     scene.style.setProperty('--touch-x',contact.x+'px');
     scene.style.setProperty('--touch-y',contact.y+'px');
     geometry.forEach(g=>{
@@ -91,6 +97,7 @@
   if('ResizeObserver' in window)new ResizeObserver(scheduleAlign).observe(scene);
   else window.addEventListener('resize',scheduleAlign,{passive:true});
   if(document.fonts?.ready)document.fonts.ready.then(scheduleAlign);
+  compact.addEventListener?.('change',scheduleAlign);
   align();
 
   function preferenceChanged(){

@@ -1,4 +1,4 @@
-# Cloud.Nails — trang mẫu chăm sóc móng
+# Van.Nails — trang mẫu chăm sóc móng
 
 Mở dist/index.html bằng trình duyệt hiện đại. Không cần cài đặt hay biên dịch. Hình ảnh và phông chữ đã được lưu trong thư mục nên trang có thể mở khi không có mạng.
 
@@ -175,4 +175,9 @@ Sau bước xác nhận, modal hiện dấu tick champagne, “Cảm ơn bạn.�
 
 Subtext ở Bộ sưu tập và Lời khách chia sẻ dùng chung cỡ chữ 14px trên desktop/mobile; giữ nguyên Gilroy, độ mảnh và cách căn chữ hiện tại.
 
-Thương hiệu hiện tại: Cloud.Nails. Đã cập nhật wordmark header/footer, tiêu đề trang, mô tả tìm kiếm, nhãn truy cập và nội dung modal. Giữ nguyên các tên API nội bộ để không làm hỏng điểm kết nối đặt lịch.
+Thương hiệu hiện tại: Van.Nails. Đã cập nhật wordmark header/footer, tiêu đề trang, mô tả tìm kiếm, nhãn truy cập và nội dung modal. Giữ nguyên các tên API nội bộ để không làm hỏng điểm kết nối đặt lịch.
+
+## Responsive refinement
+Bản mobile/tablet có điều hướng cảm ứng, cuộn dọc tự nhiên, dải dịch vụ vuốt ngang, gallery/masonry thích ứng, carousel dễ đọc và modal theo vùng nhìn khi mở bàn phím. Footer đã hiện lại đầy đủ nội dung; hai tay CTA dùng vùng hình riêng. Desktop giữ hướng thiết kế và chuyển section 900ms.
+
+Không cần cài dependency hoặc chạy build: mở dist/index.html như trước. Báo cáo phạm vi, kết quả kiểm tra và phần còn cần xem trên thiết bị thật: [RESPONSIVE-AUDIT.md](RESPONSIVE-AUDIT.md).

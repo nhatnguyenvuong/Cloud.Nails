@@ -6,6 +6,7 @@
   if(!scenes.length)return;
   const root=document.documentElement,footer=document.querySelector('.site-footer');
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const compactViewport=window.matchMedia('(max-width: 64rem), (hover: none) and (pointer: coarse)');
   const duration=900,quiet=240;
   const origins=scenes.map(scene=>{
     if(scene.getAttribute('tabindex')===null)scene.setAttribute('tabindex','-1');
@@ -46,7 +47,17 @@
     if(animation&&changed){
       const range=ranges[Math.min(animation.index,ranges.length-1)];
       animation.to=animation.edge==='end'?range.end:animation.edge==='inside'?clamp(animation.to,range.start,range.end):range.start;
-      finish();
+      // Mobile browser chrome/orientation may resize mid-swipe. Retarget the
+      // same transition instead of truncating its cinematic playback.
+      if(compactViewport.matches)state();else finish();
+    }else if(changed&&compactViewport.matches&&!surface()&&previous[active]){
+      // Preserve a settled scene (or reading position in a tall scene) when
+      // mobile viewport units reflow. Never move the background behind a modal.
+      const before=previous[active],after=ranges[active];
+      if(Math.abs(y-before.start)<2)write(after.start);
+      else if(Math.abs(y-before.end)<2)write(after.end);
+      else if(y>before.start&&y<before.end)write(clamp(after.start+y-before.start,after.start,after.end));
+      else state();
     }else state();
   }
   function scheduleMeasure(){if(!measureFrame)measureFrame=requestAnimationFrame(measure);}
@@ -204,6 +215,10 @@
   const preferenceChanged=()=>{if(reduced.matches&&animation)finish();};
   if(reduced.addEventListener)reduced.addEventListener('change',preferenceChanged);
   else if(reduced.addListener)reduced.addListener(preferenceChanged);
+  // The visual viewport reports Safari/Chrome browser-UI height changes.
+  window.visualViewport?.addEventListener('resize',()=>{
+    if(compactViewport.matches&&!surface())scheduleMeasure();
+  },{passive:true});
   if('ResizeObserver' in window){const observer=new ResizeObserver(scheduleMeasure);scenes.forEach(scene=>observer.observe(scene));}
   if('IntersectionObserver' in window){const observer=new IntersectionObserver(state);scenes.forEach(scene=>observer.observe(scene));}
   if(document.fonts?.ready)document.fonts.ready.then(scheduleMeasure);

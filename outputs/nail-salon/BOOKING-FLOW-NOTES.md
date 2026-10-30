@@ -58,7 +58,7 @@ Files:
 3. Enter required full name/phone and optional notes. Native labels/autocomplete and inline Vietnamese errors are provided.
 4. Review the complete request and use “Xác nhận đặt lịch”. Back navigation preserves all values.
 
-In the default prototype, the final action creates a preview state clearly stating that no data was sent or stored. It never uses the sent-request message. The true received-request state is reachable only when an explicitly configured live submit callback returns {requestReceived:true}; it says “Yêu cầu đặt lịch đã được gửi.” and “Cloud.Nails sẽ liên hệ với bạn để xác nhận lịch hẹn.” It never claims that the appointment itself is confirmed.
+In the default prototype, the final action creates a preview state clearly stating that no data was sent or stored. It never uses the sent-request message. The true received-request state is reachable only when an explicitly configured live submit callback returns {requestReceived:true}; it says “Yêu cầu đặt lịch đã được gửi.” and “Van.Nails sẽ liên hệ với bạn để xác nhận lịch hẹn.” It never claims that the appointment itself is confirmed.
 
 ## Prototype availability
 The interface labels dates/times as demonstration data. Opening hours are 08:00–20:00, per the supplied salon details. Past dates/times are unavailable. Two hours (11:00 and 15:00) and the date two days after today are deliberately blocked demo fixtures, not claims about actual salon availability or operating days.

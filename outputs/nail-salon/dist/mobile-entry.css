@@ -1,0 +1,61 @@
+/* Phone entrances only. Existing section controllers own activation/state;
+ * these animations never size tracks or receive navigation input. */
+@media screen and (max-width:47.5rem){
+ :root{--mobile-entry-ease:cubic-bezier(.22,1,.36,1)}
+ /* Treatments: photo rows, then their type/actions, top to bottom. */
+ #main>.services-showcase .service-panel{--service-mobile-delay:0ms}
+ #main>.services-showcase .service-panel:nth-child(2){--service-mobile-delay:100ms}
+ #main>.services-showcase .service-panel:nth-child(3){--service-mobile-delay:200ms}
+ #main>.services-showcase .service-panel:nth-child(4){--service-mobile-delay:300ms}
+ #main>.services-showcase .service-panel:nth-child(5){--service-mobile-delay:400ms}
+ #main>.services-showcase.is-service-opening .service-panel{animation:mobile-service-row 720ms var(--mobile-entry-ease) var(--service-mobile-delay) both}
+ #main>.services-showcase.is-service-opening .service-panel::before{animation:service-shadow-lift 650ms var(--mobile-entry-ease) var(--service-mobile-delay) both}
+ #main>.services-showcase.is-service-opening :is(.service-index,.service-copy h3,.service-copy p){animation:mobile-entry-rise 650ms var(--mobile-entry-ease) calc(var(--service-mobile-delay) + 120ms) both}
+ #main>.services-showcase.is-service-opening .service-index{--mobile-entry-opacity:.85}
+ #main>.services-showcase.is-service-opening .service-copy p{--mobile-entry-opacity:.9}
+ #main>.services-showcase.is-service-opening .service-open{animation:mobile-entry-rise 600ms var(--mobile-entry-ease) calc(var(--service-mobile-delay) + 220ms) both}
+ #main>.services-showcase.is-service-opening .service-panels::after{animation-duration:1200ms}
+ html.has-mobile-entry #main>.services-showcase .service-photo:not(.is-mobile-photo-loaded){opacity:0}
+ html.has-mobile-entry #main>.services-showcase:is(.is-service-opening,.is-service-entered) .service-photo.is-mobile-photo-loaded{animation:mobile-photo-appear 800ms var(--mobile-entry-ease) var(--service-mobile-delay) both}
+ html.has-mobile-entry #main>.services-showcase.is-service-entered .service-photo.is-mobile-photo-loaded{animation-delay:0ms}
+ /* Gallery: editorial copy -> selector -> masked image -> image navigation. */
+ #main>#gallery.is-edit-intro-ready:not(.is-edit-entered):not(.is-edit-opening) :is(.edit-category-control,.edit-slider-control,.edit-thumbnails,.edit-pagination){opacity:0}
+ #main>#gallery.is-edit-opening .gallery-heading{animation:none}
+ #main>#gallery.is-edit-opening .section-tag{animation:mobile-entry-rise 650ms var(--mobile-entry-ease) both}
+ #main>#gallery.is-edit-opening #gallery-title{animation:mobile-entry-rise 700ms var(--mobile-entry-ease) 80ms both}
+ #main>#gallery.is-edit-opening .edit-description{animation:mobile-entry-rise 650ms var(--mobile-entry-ease) 160ms both}
+ #main>#gallery.is-edit-opening .edit-category-control{animation:mobile-entry-rise 650ms var(--mobile-entry-ease) 320ms both}
+ #main>#gallery.is-edit-entered .edit-card.is-current{animation:mobile-gallery-image 620ms var(--mobile-entry-ease) both}
+ #main>#gallery.is-edit-opening .edit-card.is-current{animation:mobile-gallery-image 800ms var(--mobile-entry-ease) 480ms both}
+ #main>#gallery.is-edit-opening .edit-slider-control{animation:mobile-entry-opacity 600ms var(--mobile-entry-ease) 760ms both}
+ #main>#gallery.is-edit-opening .edit-thumbnails{animation:mobile-entry-rise 650ms var(--mobile-entry-ease) 880ms both}
+ #main>#gallery.is-edit-opening .edit-pagination{animation:mobile-entry-rise 600ms var(--mobile-entry-ease) 960ms both}
+ #main>#gallery .edit-stage{transition:opacity 180ms ease}
+ #main>#gallery .edit-stage.is-switching{opacity:0}
+ html.has-mobile-entry #main>#gallery .edit-card img:not(.is-mobile-photo-loaded){opacity:0}
+ html.has-mobile-entry #main>#gallery .edit-card img.is-mobile-photo-loaded{animation:mobile-photo-appear 650ms var(--mobile-entry-ease) both}
+ /* Testimonials: the original light/dust layers and projected 3D slots. */
+ #main>#testimonials.is-intro-playing::before{animation:review-light-emerge 650ms ease 0ms both}
+ #main>#testimonials.is-intro-playing .review-dust{animation:review-dust-emerge 600ms ease 80ms both}
+ #main>#testimonials.is-intro-playing .testimonials-heading{animation:mobile-entry-rise 700ms var(--mobile-entry-ease) 180ms both}
+ #main>#testimonials.is-intro-playing .review-card{animation:review-mobile-card-reveal 760ms var(--mobile-entry-ease) calc(420ms + (var(--intro-delay,560ms) - 560ms)*1.5) both}
+ #main>#testimonials.is-intro-playing .review-nav{animation:mobile-entry-rise 600ms var(--mobile-entry-ease) 1100ms both}
+ /* Footer uses its one missing entry hook, consuming the same settled state. */
+ .site-footer.is-mobile-footer-ready:not(.is-mobile-footer-entered):not(.is-mobile-footer-playing) :is(.footer-brand,.footer-column,.footer-bottom){opacity:0}
+ .site-footer.is-mobile-footer-playing .footer-brand{animation:mobile-entry-rise 700ms var(--mobile-entry-ease) both}
+ .site-footer.is-mobile-footer-playing nav[aria-labelledby="footer-services-title"]{animation:mobile-entry-rise 650ms var(--mobile-entry-ease) 120ms both}
+ .site-footer.is-mobile-footer-playing nav[aria-labelledby="footer-explore-title"]{animation:mobile-entry-rise 650ms var(--mobile-entry-ease) 240ms both}
+ .site-footer.is-mobile-footer-playing .footer-contact{animation:mobile-entry-rise 700ms var(--mobile-entry-ease) 360ms both}
+ .site-footer.is-mobile-footer-playing .footer-bottom{animation:mobile-entry-rise 650ms var(--mobile-entry-ease) 500ms both}
+}
+@keyframes mobile-entry-rise{from{opacity:0;transform:translateY(16px)}to{opacity:var(--mobile-entry-opacity,1);transform:none}}
+@keyframes mobile-entry-opacity{from{opacity:0}to{opacity:1}}
+@keyframes mobile-photo-appear{from{opacity:0}to{opacity:1}}
+@keyframes mobile-service-row{from{opacity:0;clip-path:inset(4% 0 0 0);transform:translateY(16px)}to{opacity:1;clip-path:inset(0);transform:none}}
+@keyframes mobile-gallery-image{from{opacity:0;clip-path:inset(9% 0 0 0);transform:translateY(16px)}to{opacity:1;clip-path:inset(0);transform:none}}
+@media screen and (max-width:47.5rem) and (prefers-reduced-motion:reduce){
+ #main>.services-showcase :is(.service-panel,.service-photo,.service-index,.service-copy h3,.service-copy p,.service-open),#main>#gallery :is(.gallery-heading,.section-tag,#gallery-title,.edit-description,.edit-category-control,.edit-card,.edit-card img,.edit-slider-control,.edit-thumbnails,.edit-pagination),.site-footer:is(.is-mobile-footer-ready,.is-mobile-footer-playing) :is(.footer-brand,.footer-column,.footer-bottom){animation:none!important}
+ .site-footer:is(.is-mobile-footer-ready,.is-mobile-footer-playing) :is(.footer-brand,.footer-column,.footer-bottom){opacity:1!important;transform:none!important}
+ #main>#gallery .edit-stage{transition:none!important}
+ #main>#testimonials.is-intro-playing :is(.testimonials-heading,.review-card,.review-nav){animation:none!important}
+}

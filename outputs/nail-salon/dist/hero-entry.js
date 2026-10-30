@@ -6,7 +6,7 @@
   const backdrops=hero.querySelector('.hero-backdrops');
   if(!backdrops){clearBoot();root.classList.remove('hero-entry-pending','hero-entry-running');return;}
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
-  const fine=window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 761px)');
+  const fine=window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 64.0625rem)');
   const armed=root.classList.contains('hero-entry-pending');
   let complete=!armed,started=false,disposed=false,suspended=false,active=false;
   let introTimer=0,graceTimer=0,deadline=0,frame=0,previousTime=0,lastDraw=0;
@@ -59,7 +59,7 @@
     if(context&&width&&height&&!reduced.matches){
       const ratio=Math.min(window.devicePixelRatio||1,1.25,Math.sqrt(1800000/(width*height)));
       canvas.width=Math.max(1,Math.floor(width*ratio));canvas.height=Math.max(1,Math.floor(height*ratio));context.setTransform(ratio,0,0,ratio,0,0);
-      const count=width<=760?5:14;
+      const count=width<=1024?5:14;
       particles=Array.from({length:count},(_,i)=>({x:i%5===0?.95+(i%3)*.009:.025+((i*37)%100)/100*.29,y:((i*43+11)%97)/97,radius:.35+(i%4)*.12,alpha:.055+(i%4)*.018,speed:.0018+(i%3)*.0006,period:7000+(i%5)*1700,phase:i*1.7}));
     }
     updateActivity();
