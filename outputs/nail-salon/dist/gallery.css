@@ -117,3 +117,6 @@ dialog.edit-viewer::backdrop{background:var(--edit-modal);backdrop-filter:blur(9
 .gallery-editorial .gallery-heading > .eyebrow{font-family:var(--body);font-size:10px;line-height:1.6;letter-spacing:1.6px;color:var(--muted);padding:0;margin:0 0 18px}
 #main > #gallery #gallery-title > span{white-space:nowrap;font-style:normal;color:inherit}
 #main > #gallery #gallery-title > .gallery-title-accent{font-style:italic;color:#d8b995}
+
+/* Gallery photos are display-only (no lightbox). */
+.gallery-editorial .edit-card,.gallery-editorial .edit-card:not(.is-placeholder){cursor:default}

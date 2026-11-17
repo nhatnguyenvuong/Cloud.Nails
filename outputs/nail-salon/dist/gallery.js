@@ -107,7 +107,7 @@
     categoryList.setAttribute('aria-orientation','vertical');
     tabs.forEach(tab=>tab.setAttribute('role',mobileView()?'option':'tab'));
     panel.setAttribute('role',mobileView()?'region':'tabpanel');
-    if(help)help.textContent=mobileView()?'Chọn danh mục để đổi bộ ảnh. Vuốt ngang hoặc dùng nút mũi tên để chuyển ảnh; chọn ảnh để xem lớn. Trong danh sách danh mục, dùng mũi tên lên hoặc xuống để di chuyển, Enter để chọn và Escape để đóng.':desktopHelp;
+    if(help)help.textContent=mobileView()?'Chọn danh mục để đổi bộ ảnh. Vuốt ngang hoặc dùng nút mũi tên để chuyển ảnh; Trong danh sách danh mục, dùng mũi tên lên hoặc xuống để di chuyển, Enter để chọn và Escape để đóng.':desktopHelp;
     syncTabs(category.id);buildImageNavigation();
   }
   if(categoryControl&&categoryTrigger){
@@ -209,9 +209,8 @@
         image.removeAttribute('src');image.alt='';return;
       }
       card.removeAttribute('role');card.removeAttribute('aria-disabled');
-      card.setAttribute('aria-haspopup','dialog');card.setAttribute('aria-controls','edit-viewer');
       card.href=item.src;card.dataset.title=item.title;card.dataset.credit=item.credit;
-      card.setAttribute('aria-label','Mở ảnh lớn: '+item.title);
+      card.setAttribute('aria-label',item.title);
       if(mobileView())image.classList.remove('is-mobile-photo-loaded');
       image.alt=item.alt;image.width=item.width;image.height=item.height;image.src=item.src;
       if(mobileView())requestAnimationFrame(()=>{
@@ -277,12 +276,10 @@
   }
   allCards.forEach(card=>{
     card.addEventListener('click',event=>{
-      if(event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
-      if(busy||performance.now()<suppressClickUntil){event.preventDefault();return;}
-      if(card.dataset.placeholder==='true'){event.preventDefault();return;}
-      if(card.hidden||typeof viewer.showModal!=='function')return;
-      event.preventDefault();returnFocus=card;select(cards.indexOf(card));resetMotion(true);renderViewer();
-      if(!viewer.open){viewer.showModal();lockViewer();}
+      // Photos are display-only: no lightbox, no navigation to the image file.
+      event.preventDefault();
+      if(busy||performance.now()<suppressClickUntil||card.dataset.placeholder==='true')return;
+      if(cards.includes(card))select(cards.indexOf(card));
     });
     card.addEventListener('focus',()=>{if(cards.includes(card))select(cards.indexOf(card));});
     card.addEventListener('keydown',event=>{
