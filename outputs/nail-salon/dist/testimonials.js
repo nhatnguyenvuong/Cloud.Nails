@@ -83,8 +83,7 @@
     progress.style.setProperty('transform','scaleX('+((current+1)/count)+')');
     if(announce){
       const name=cards[current].querySelector('.review-customer').textContent;
-      const service=cards[current].querySelector('.review-service').textContent;
-      announcement.textContent='Lời chia sẻ '+(current+1)+' trên '+count+' — '+name+', '+service;
+      announcement.textContent='Lời chia sẻ '+(current+1)+' trên '+count+' — '+name;
     }
   }
   function finishIntro(skip=false){
