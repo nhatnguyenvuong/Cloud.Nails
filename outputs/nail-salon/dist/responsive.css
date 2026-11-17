@@ -609,3 +609,13 @@ html.is-mobile-menu-open body,html.is-gallery-modal-open body{overscroll-behavio
  .site-footer.footer-editorial .footer-contact li:nth-child(3){grid-row:3}
  .site-footer.footer-editorial .footer-contact li:last-child{grid-row:4}
 }
+/* Contact block (tablet/desktop): two columns mirrored around the centre axis. */
+@media screen and (min-width:47.5625rem){
+ #main>#visit .contact-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(48px,6vw,96px)}
+ #main>#visit .contact-grid>div:first-child{text-align:right}
+ #main>#visit .contact-grid>div:first-child>*{margin-left:auto}
+ #main>#visit .contact-grid>div:last-child{text-align:left}
+}
+@media screen and (min-width:47.5625rem) and (max-width:64rem){
+ #main>#visit .contact-links>a{min-height:24px;display:block}
+}
