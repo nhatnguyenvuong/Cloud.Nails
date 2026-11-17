@@ -59,3 +59,6 @@
 }
 
 @media(max-width:760px){.site-footer.footer-editorial{padding-bottom:calc(96px + env(safe-area-inset-bottom))}}
+/* Opening hours sit in the centre of the footer bottom row. */
+.site-footer.footer-editorial .footer-hours{display:inline-flex;align-items:center;gap:10px;color:var(--footer-text)}
+.site-footer.footer-editorial .footer-hours svg{width:16px;height:16px;flex:none;color:var(--footer-accent)}
