@@ -619,3 +619,10 @@ html.is-mobile-menu-open body,html.is-gallery-modal-open body{overscroll-behavio
 @media screen and (min-width:47.5625rem) and (max-width:64rem){
  #main>#visit .contact-links>a{min-height:24px;display:block}
 }
+/* Gilroy's acute accent merges into the "o" below ~15px on Windows; keep
+ * footer and contact-block text at 15px or larger at every breakpoint. */
+.site-footer.footer-editorial :is(.footer-link,.back-top,.footer-description,.footer-copyright,.footer-hours),
+.site-footer.footer-editorial .footer-contact :is(li>p,li>a),
+#main>#visit .contact-grid :is(p,a),
+#main>#visit .contact-links>a{font-size:15px!important}
+@media screen and (min-width:47.5625rem){#main>#visit .contact-grid h3{font-size:15px}}
